@@ -41,7 +41,7 @@ const int m2Pin = 14;
 const int m3Pin = 27;
 const int nSleepPin = 25;
 const int nResetPin = 26;
-const int EnablePin = 13;
+const int nEnablePin = 13;
 
 const int limit_switch_near = 34;
 const int limit_switch_far = 35;
@@ -80,7 +80,7 @@ void IRAM_ATTR near_switch_pressed(void){
     // disable controller and stop trying to open the window.
     digitalWrite(nSleepPin, LOW);
     digitalWrite(nResetPin, LOW);
-    digitalWrite(EnablePin, LOW);
+    digitalWrite(nEnablePin, HIGH);
     open_close_flag == 0;
     open_close_done_flag = 1;
     last_steps = steps;
@@ -94,7 +94,7 @@ void IRAM_ATTR far_switch_pressed(void){
   if (digitalRead (limit_switch_far) == HIGH && open_close_flag == -1){
     digitalWrite(nSleepPin, LOW);
     digitalWrite(nResetPin, LOW);
-    digitalWrite(EnablePin, LOW);
+    digitalWrite(nEnablePin, HIGH);
     open_close_flag == 0;
     open_close_done_flag = 1;
     last_steps = steps;
@@ -116,13 +116,13 @@ void open_window() {
   digitalWrite(led, 0);
 
 //  near_pressed = digitalRead (limit_switch_near);
-  if (digitalRead (limit_switch_near) == 0){ //only try to open if not already open
+  if (digitalRead (limit_switch_near) == 0){
     open_close_flag = 1;
     steps = 0;
     digitalWrite(dirPin, LOW); // set open window direction
     digitalWrite(nSleepPin, HIGH); // Turn on stepper controller
     digitalWrite(nResetPin, HIGH);
-    digitalWrite(EnablePin, HIGH);
+    digitalWrite(nEnablePin, LOW);
   } else {
     open_close_flag = 0;
   }
@@ -138,13 +138,13 @@ void close_window() {
   digitalWrite(led, 0);
   
 //  far_pressed = digitalRead (limit_switch_far);
-  if (digitalRead (limit_switch_far) == 0){ //only try to close if not already close
+  if (digitalRead (limit_switch_far) == 0){
     open_close_flag = -1;
     steps = 0;
     digitalWrite(dirPin, HIGH); // set close window direction
     digitalWrite(nSleepPin, HIGH); // Turn on stepper controller
     digitalWrite(nResetPin, HIGH);
-    digitalWrite(EnablePin, HIGH);
+    digitalWrite(nEnablePin, LOW);
   } else {
     open_close_flag = 0;
   }
@@ -173,7 +173,7 @@ void setup(void) {
   digitalWrite(m3Pin,HIGH);
   digitalWrite(nSleepPin,LOW);
   digitalWrite(nResetPin, LOW);
-  digitalWrite(EnablePin, LOW);
+  digitalWrite(nEnablePin, HIGH);
 
   pinMode(led,OUTPUT); 
   pinMode(stepPin,OUTPUT); 
@@ -183,7 +183,7 @@ void setup(void) {
   pinMode(m3Pin,OUTPUT);
   pinMode(nSleepPin,OUTPUT);
   pinMode(nResetPin, OUTPUT);
-  pinMode(EnablePin, OUTPUT);
+  pinMode(nEnablePin, OUTPUT);
   
   pinMode(limit_switch_near,INPUT);
   pinMode(limit_switch_far,INPUT);
