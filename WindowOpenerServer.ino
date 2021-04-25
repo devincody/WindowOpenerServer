@@ -119,7 +119,7 @@ void open_window() {
   if (digitalRead (limit_switch_near) == 0){
     open_close_flag = 1;
     steps = 0;
-    digitalWrite(dirPin, LOW); // set open window direction
+    digitalWrite(dirPin, HIGH); // set open window direction
     digitalWrite(nSleepPin, HIGH); // Turn on stepper controller
     digitalWrite(nResetPin, HIGH);
     digitalWrite(nEnablePin, LOW);
@@ -141,7 +141,7 @@ void close_window() {
   if (digitalRead (limit_switch_far) == 0){
     open_close_flag = -1;
     steps = 0;
-    digitalWrite(dirPin, HIGH); // set close window direction
+    digitalWrite(dirPin, LOW); // set close window direction
     digitalWrite(nSleepPin, HIGH); // Turn on stepper controller
     digitalWrite(nResetPin, HIGH);
     digitalWrite(nEnablePin, LOW);
